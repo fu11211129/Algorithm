@@ -2,6 +2,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Arrays;
 
 public class MultiIterator<E> implements Iterator {
 
@@ -60,7 +61,7 @@ public class MultiIterator<E> implements Iterator {
         b.addAll(Arrays.asList(2, 8, 14, 18));
 
         List<Integer> c = new LinkedList<>();
-        c.addAll(Arrays.asList(3, 9))
+        c.addAll(Arrays.asList(3, 9));
 
         List<Integer> d = new LinkedList<>();
         d.addAll(Arrays.asList(4, 10, 15));
@@ -70,7 +71,7 @@ public class MultiIterator<E> implements Iterator {
 
         List<Integer> f = new LinkedList<>();
         f.addAll(Arrays.asList(6, 12, 16, 19));
-        
+
         List<Iterator<Integer>> iterators = new LinkedList<>();
         iterators.add(a.iterator());
         iterators.add(b.iterator());
