@@ -15,7 +15,6 @@ public class EvaluateDivision {
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
         int n = equations.length;
         Map<String, Map<String, Double> > mp = new HashMap<> ();
-
         // build graph
         for(int i=0; i<n; ++i) {
             String ne = equations[i][0];
