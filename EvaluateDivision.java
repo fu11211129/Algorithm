@@ -6,7 +6,7 @@ public class EvaluateDivision {
         String[][] equations = new String[][] {{"a", "b"}, {"b", "c"}};
         double[] values = new double[] {2.0, 3.0};
         String[][] queries = new String[][] {{"a", "c"}, {"b", "a"}, {"a", "e"}, {"a", "a"}, {"x", "x"}};
-
+        //ff
         EvaluateDivision ed = new EvaluateDivision();
         double[] results = ed.calcEquation(equations, values, queries);
         System.out.println(Arrays.toString(results));
