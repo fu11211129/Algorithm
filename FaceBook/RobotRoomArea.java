@@ -26,7 +26,8 @@ public class RobotRoomArea {
                 int ny = no.y + dirs[i][1];
                 Node nd = new Node(nx, ny);
 
-                if(valid(nx, ny, grid) && !visited.contains(nd)) {
+                if(valid(nx, ny, gr
+                id) && !visited.contains(nd)) {
                     visited.add(nd);
                     Q.offer(nd);
                 }
