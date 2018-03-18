@@ -1,11 +1,11 @@
 import java.util.*;
 
-public class NumberOfAtoms {
+public class NumberOfAtom {
 
     public static void main(String[] args) {
         String formula = "K4(ON(SO3)2)2";
         NumberOfAtoms sol = new NumberOfAtoms();
-        String parsedFormula = sol.countOfAtoms(formula);
+        String parsedFormula = sol.countOfAtom(formula);
         System.out.println(parsedFormula);
     }
 
