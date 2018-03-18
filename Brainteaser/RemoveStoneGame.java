@@ -21,3 +21,4 @@ public class RemoveStoneGame {
         return N % (M + 1) == 0;
     }
 }
+·
