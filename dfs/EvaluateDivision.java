@@ -2,6 +2,8 @@ import java.util.*;
 
 public class EvaluateDivision {
 
+    public double result = 0;
+
     public static void main(String[] args) {
         String[][] equations = new String[][] {{"a", "b"}, {"b", "c"}};
         double[] values = new double[] {2.0, 3.0};
@@ -39,11 +41,14 @@ public class EvaluateDivision {
         double[] results = new double[nq];
         for(int i=0; i<nq; ++i) {
             used.clear();
+            result = -1.0;
             String ne = queries[i][0];
             String de = queries[i][1];
-            double rs = query(ne, de, used, mp, 1.0);
-            if(rs == 0.0) results[i] = -1.0;
-            else results[i] = rs;
+            // double rs = query(ne, de, used, mp, 1.0);
+            dfs(ne, de, used, mp, 1.0);
+            // if(rs == 0.0) results[i] = -1.0;
+            // else results[i] = rs;
+            System.out.println(result);
         }
 
         return results;
@@ -63,6 +68,23 @@ public class EvaluateDivision {
         }
         used.remove(cur);
         return rs;
+    }
+
+    public void dfs(String cur, String end, Set<String> used, Map<String, Map<String, Double> > mp, double value) {
+        if(cur.equals(end)) {
+            result = value;
+            return;
+        }
+
+        if(used.contains(cur)) return;
+        
+        used.add(cur);
+        Map<String, Double> adjs = mp.get(cur);
+
+        for(String de: adjs.keySet()) {
+            dfs(de, end, used, mp, value * adjs.get(de));
+        }
+        used.remove(cur);
     }
 
 }
