@@ -47,27 +47,33 @@ public class MultiIteratorVertical<E> implements Iterator {
     }
 
     public static void main(String[] args) {
-        int[] nums = new int[2000];
-        int e = 0;
-        for(int i=0; i<nums.length; ++i) nums[i] = ++e;
-
+        // int[] nums = new int[200];
+        // int e = 0;
+        // for(int i=0; i<nums.length; ++i) nums[i] = ++e;
+        //
         List<Iterator<Integer>> its = new LinkedList<>();
-        for(int k=0; k<2000; ++k) {
-            List<Integer> each = new LinkedList<> ();
-            for(int i=0; i<nums.length; ++i) each.add(nums[i]);
-            its.add(each.iterator());
-        }
+        // for(int k=0; k<200; ++k) {
+        //     List<Integer> each = new LinkedList<> ();
+        //     for(int i=0; i<nums.length; ++i) each.add(nums[i]);
+        //     its.add(each.iterator());
+        // }
+
+        its.add(Arrays.asList(1, 7, 13, 17).iterator());
+        its.add(Arrays.asList(2, 8, 14, 18).iterator());
+        its.add(Arrays.asList(3, 9).iterator());
+        its.add(Arrays.asList(4, 10, 15).iterator());
+        its.add(Arrays.asList(5, 11).iterator());
+        its.add(Arrays.asList(6, 12, 16, 19).iterator());
 
         MultiIterator<Integer> it = new MultiIterator<>(its.iterator());
         long prev = System.currentTimeMillis();
         int times = 0;
         while (it.hasNext()) {
-            it.next(); // prints: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,
-            times += 1;
-        }
+            int val = it.next(); // prints: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,
+            System.out.print(val + " ");
+        } System.out.println();
         long curr = System.currentTimeMillis();
 
-        System.out.println(times);
         System.out.println((curr - prev) + " ms");
     }
 }

@@ -28,12 +28,10 @@ public class EncodeStringWithShortestLength {
                 String sf = s.substring(i,j+1);
                 f[i][j] = sf;
 
-                int k = i;
-                for(; k<j; ++k) {
+                for(int k = i; k<j; ++k) {
                     // find the concatenatin of shortest combined length
                     if(f[i][k].length() + f[k+1][j].length() < f[i][j].length()) {
-                        //slen = f[i][k].length() + f[k+1][j].length();
-                        System.out.print(String.format("f[%d:%d] = %s  f[%d:%d] = %s\n", i, k, f[i][k], (k+1), j, f[k+1][j]));
+                        // System.out.print(String.format("f[%d:%d] = %s  f[%d:%d] = %s\n", i, k, f[i][k], (k+1), j, f[k+1][j]));
                         f[i][j] = f[i][k] + f[k+1][j];
                     }
                 }
@@ -42,6 +40,9 @@ public class EncodeStringWithShortestLength {
                 int index = f2.indexOf(sf, 1);
                 if(index < sf.length()) {
                     int len = index;
+                    // very important, not "String repeatUnit = s.substring(i, i+len)"
+                    // because in previous steps (line 31-36), s.substring(i, i+len) has been encoded with shortest length
+                    // so "repeatUnit = f[i][i+len-1]""
                     String repeatUnit = f[i][i+len-1];
                     int times = sf.length() / len;
 
