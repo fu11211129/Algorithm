@@ -3,11 +3,12 @@ import java.util.*;
 public class VoteProblem {
     public static void main(String[] args) {
         List<Vote> ls = new ArrayList<>();
-        ls.add(new Vote("a", 100));
-        ls.add(new Vote("b", 150));
-        ls.add(new Vote("b", 180));
-        ls.add(new Vote("a", 200));
+        ls.add(new Vote("a", 100)); // leader = {"a"}, 100 -> "a"
+        ls.add(new Vote("b", 150)); // leader = {"a", "b"}, 150 -> ("a", "b")
+        ls.add(new Vote("b", 180)); // leader = {"b"}, 180 -> ("b")
+        ls.add(new Vote("a", 200)); // leader = {"a", "b"}, 200 -> ("a", "b")
 
+        // (100, "a"), leader = "a"
         Map<String, List<Integer> > cand2ts = new HashMap<> ();
         for(Vote vt: ls) {
             if(!cand2ts.containsKey(vt.cand)) cand2ts.put(vt.cand, new ArrayList<>());
