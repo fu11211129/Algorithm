@@ -2,15 +2,19 @@ import java.util.*;
 
 public class RectIntersection {
 
+    public List<Rectangle> blocks = new ArrayList<> ();
+    public Random rand = new Random();
+
     public static void main(String[] args) {
         RectIntersection ri = new RectIntersection();
         List<Rectangle> list = new ArrayList<> ();
         list.add(new Rectangle(0.0, 0.0, 10.0, 10.0));
         list.add(new Rectangle(5.0, -2.0, 12.0, 12.0));
-        ri.getRectIntersection(list);
+        ri.getRandomPointsFromRectangles(list);
+        //for(double v: randPoint) System.out.print(v + " ");
     }
 
-    public void getRectIntersection(List<Rectangle> list) {
+    public void getRandomPointsFromRectangles(List<Rectangle> list) {
         int n = list.size();
         Line[] line = new Line[2*n + 1];
         double[] y = new double[2*n + 1];
@@ -35,7 +39,13 @@ public class RectIntersection {
         for(int i=1; i<index; ++i) {
             Counter co = new Counter();
             insert(root, line[i].x, line[i].yd, line[i].yu, line[i].flag, co);
-            System.out.println(String.format("rect[%d] => %d\n", line[i].rectId, co.cc));
+            // System.out.println(String.format("rect[%d] => %d\n", line[i].rectId, co.cc));
+        }
+
+        for(int i=0; i<blocks.size(); ++i) {
+            Rectangle rect = blocks.get(i);
+            double area = (rect.x2 - rect.x1) * (rect.y2 - rect.y1);
+            System.out.println(rect.x1 + " " + rect.y1 + " " + rect.x2 + " " + rect.y2 + " => " + area);
         }
     }
 
@@ -64,7 +74,8 @@ public class RectIntersection {
             if(p.cover > 0) {
                 double prev = p.x;
                 area = (x - prev) * (p.yu - p.yd);
-                System.out.print(area + " ");
+                // System.out.print(area + " ");
+                blocks.add(new Rectangle(prev, p.yd, x, p.yu));
                 co.cc += 1;
             }
             p.cover += flag;
