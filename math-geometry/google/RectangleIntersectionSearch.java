@@ -9,20 +9,17 @@ import java.util.Collection;
 public class RectangleIntersectionSearch {
 
 	public static class Point implements Comparable<Point> {
-		public Point(Integer x, Integer y)
-		{
+		public Point(Integer x, Integer y) {
 			this.x = x;
 			this.y = y;
 		}
 
-		public Point(Point other)
-		{
+		public Point(Point other) {
 			this.x = other.x;
 			this.y = other.y;
 		}
 
-		public int compareTo(Point other)
-		{
+		public int compareTo(Point other) {
 			int result = x.compareTo(other.x);
 
 			if (result != 0) return result;
@@ -31,8 +28,7 @@ public class RectangleIntersectionSearch {
 		}
 
 		@Override
-		public String toString()
-		{
+		public String toString() {
 			return "(" + x + ", " + y + ")";
 		}
 
@@ -42,10 +38,8 @@ public class RectangleIntersectionSearch {
 		public Line line;
 	}
 
-	public static class Line
-	{
-		public Line(Point bottom, Point top)
-		{
+	public static class Line {
+		public Line(Point bottom, Point top) {
 			bottom.line = this;
 			top.line = this;
 
@@ -54,8 +48,7 @@ public class RectangleIntersectionSearch {
 		}
 
 		@Override
-		public String toString()
-		{
+		public String toString() {
 			return bottom.toString() + " -- " + top.toString();
 		}
 
@@ -65,10 +58,8 @@ public class RectangleIntersectionSearch {
 		public Rectangle rectangle;
 	}
 
-	public static class Rectangle
-	{
-		public Rectangle(final Line left, final Line right)
-		{
+	public static class Rectangle {
+		public Rectangle(final Line left, final Line right) {
 			left.rectangle = this;
 			right.rectangle = this;
 
@@ -106,8 +97,7 @@ public class RectangleIntersectionSearch {
 		public final Line right;
 	}
 
-	public static class Result
-	{
+	public static class Result {
 		public Result(Rectangle left, Rectangle right, Rectangle intersection)
 		{
 			this.left = left;
@@ -136,7 +126,9 @@ public class RectangleIntersectionSearch {
 		rectangles.add(new Rectangle(new Point(5, 2), new Point(7, 6), "B"));
 
 		rectangles.add(new Rectangle(new Point(3, 4), new Point(6, 5), "C"));
-		rectangles.add(new Rectangle(new Point(1, 2), new Point(3, 3), "D"));
+		rectangles.add(new Rectangle(new Point(2, 2), new Point(3, 3), "D"));
+
+        rectangles.add(new Rectangle(new Point(1, 1), new Point(4, 3), "E"));
 
 		for (Result result : RectangleIntersectionSearch.find(rectangles))
 		{
@@ -146,7 +138,7 @@ public class RectangleIntersectionSearch {
 
 	public static Iterable<Result> find(Collection<? extends Rectangle> rectangles)
 	{
-		ArrayList<Point> points = new ArrayList<>(rectangles.size() * 2);
+		ArrayList<Point> points = new ArrayList<>();
 
 		for (Rectangle rectangle : rectangles)
 		{
@@ -160,17 +152,14 @@ public class RectangleIntersectionSearch {
 
 		ArrayList<Result> results = new ArrayList<>();
 
-		for (Point point : points)
-		{
+		for (Point point : points) {
 			final Rectangle rectangle = point.line.rectangle;
 
 			final Integer bottom = rectangle.left.bottom.y;
 			final Integer top = rectangle.left.top.y;
 
-			if (isLeft(point))
-			{
-				for (Rectangle match : tree.intersectingValues(bottom, top))
-				{
+			if (isLeft(point)) {
+				for (Rectangle match : tree.intersectingValues(bottom, top)) {
 					final Rectangle area = getIntersectionArea(rectangle, match);
 
 					results.add(new Result(rectangle, match, area));

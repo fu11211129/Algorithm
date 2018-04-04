@@ -9,23 +9,23 @@ public class IntervalSearchTree<Value>
 {
 	public static void main(String[] args)
 	{
-		IntervalSearchTree<String> tree = new IntervalSearchTree<>();
-
-		tree.insert(10, 15, "a");
-		tree.insert(7, 11, "b");
-		tree.insert(12, 16, "c");
-		tree.insert(8, 9, "d");
-		tree.insert(11, 12, "e");
-		tree.insert(13, 15, "f");
-		tree.insert(4, 6, "g");
-		tree.insert(1, 5, "h");
-
-		tree.erase(8, 9);
-
-		for (Interval interval : tree.intersections(8, 15))
-		{
-			System.out.printf("%d - %d\n", interval.start, interval.end);
-		}
+		// IntervalSearchTree<String> tree = new IntervalSearchTree<>();
+        //
+		// tree.insert(10, 15, "a");
+		// tree.insert(7, 11, "b");
+		// tree.insert(12, 16, "c");
+		// tree.insert(8, 9, "d");
+		// tree.insert(11, 12, "e");
+		// tree.insert(13, 15, "f");
+		// tree.insert(4, 6, "g");
+		// tree.insert(1, 5, "h");
+        //
+		// tree.erase(8, 9);
+        //
+		// for (Interval interval : tree.intersections(8, 15))
+		// {
+		// 	System.out.printf("%d - %d\n", interval.start, interval.end);
+		// }
 	}
 
 	public static class Interval implements Comparable<Interval>
@@ -70,7 +70,7 @@ public class IntervalSearchTree<Value>
 
 	public void erase(Integer start, Integer end)
 	{
-		assertArguments(start, end);
+		// assertArguments(start, end);
 
 		root = erase(root, new Interval(start, end));
 	}
