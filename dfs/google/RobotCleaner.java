@@ -8,6 +8,7 @@ public class RobotCleaner {
     private Set<String> used;
     private Stack<int[]> stack;
     private Stack<Integer> actions;
+    private Map<String, Set<Integer> > used = new HashMap<> ();
     // void turnLeft(k)
     // void turnRight(k)
     // void clean()
@@ -25,8 +26,15 @@ public class RobotCleaner {
 
     public boolean nextMove() {
         if(move()) {
-            pos[0] += dirs[currDir][0];
-            pos[1] += dirs[currDir][1];
+            String posStr = (pos[0] + dirs[currDir][0]) + "," + (pos[1] + dirs[currDir][1]);
+            if(used.get(posStr) == null || !used.get(posStr).contains(currDir)) {
+                pos[0] += dirs[currDir][0];
+                pos[1] += dirs[currDir][1];
+                return true;
+            } else {
+                makeTurns();
+            }
+
             return true;
         } else {
             trunLeft(1);
@@ -59,6 +67,53 @@ public class RobotCleaner {
 
     public void cleanRoom() {
         int sx = 0, sy = 0;
-        
+        String pos = sx + "," + sy;
+        cellDir.put(pos, new HashSet<> ());
+
+        boolean stuck = false;
+
+        while(!stuck) {
+            clean(); // clean the current area
+
+            int nx = pos[0] + dirs[currDir][0];
+            int ny = pos[1] + dirs[currDir][1];
+            String nxy = nx + "," + ny;
+            stuck = true;
+
+            if(used.get(nxy) == null || !used.get(nxy).contains(currDir)) { // this cell has not been visited.
+                boolean canMove = move();
+                if(canMove) {
+                    pos[0] += dirs[currDir][0];
+                    pos[1] += dirs[currDir][0];
+                    String posStr = pos[0] + "," + pos[1];
+                    if(used.get(posStr) == null) used.put(posStr, new HashSet<> ());
+                    used.get(posStr).add(currDir);
+                    stuck = false;
+
+                } else { // cannot move forward
+                    for(int k=1; k<=3; ++k) {
+                        int ndir = (currDir + k) % 4;
+                        nx = pos[0] + dirs[ndir][0];
+                        ny = pos[1] + dirs[ndir][1];
+                        nxy = nx + "," + ny;
+
+                        if(used.get(nxy) == null || !used.get(nxy).contains(ndir)) {
+                            boolean canMove = move();
+                            if(canMove) {
+                                currDir = ndir; // change direction.
+                                pos[0] += dirs[currDir][0];
+                                pos[1] += dirs[currDir][0];
+                                String posStr = pos[0] + "," + pos[1];
+                                if(used.get(posStr) == null) used.put(posStr, new HashSet<> ());
+                                used.get(posStr).add(currDir);
+                                stuck = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
     }
 }
