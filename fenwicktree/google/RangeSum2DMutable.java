@@ -48,8 +48,8 @@ public class RangeSum2DMutable {
 
         public int getSum(int r, int c) {
             int result = 0;
-            for(int i=r; i>0; i-=i&(-i)) {
-                for(int j=c; j>0; j-=j&(-j)) {
+            for(int i=r; i>=1; i-=i&(-i)) {
+                for(int j=c; j>=1; j-=j&(-j)) {
                     result += sum[i][j];
                 }
             }

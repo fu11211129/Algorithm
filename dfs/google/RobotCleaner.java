@@ -78,7 +78,6 @@ public class RobotCleaner {
             int nx = pos[0] + dirs[currDir][0];
             int ny = pos[1] + dirs[currDir][1];
             String nxy = nx + "," + ny;
-            stuck = true;
 
             if(used.get(nxy) == null || !used.get(nxy).contains(currDir)) { // this cell has not been visited.
                 boolean canMove = move();
@@ -91,6 +90,8 @@ public class RobotCleaner {
                     stuck = false;
 
                 } else { // cannot move forward
+                    stuck = true;
+                    
                     for(int k=1; k<=3; ++k) {
                         int ndir = (currDir + k) % 4;
                         nx = pos[0] + dirs[ndir][0];
