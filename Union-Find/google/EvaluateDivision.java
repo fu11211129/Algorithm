@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class EvaluateDivision {
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
         int n = equations.length;
@@ -54,13 +56,30 @@ public class EvaluateDivision {
     public String find(String x, Map<String, String> fa, Map<String, Double> val) {
         if(fa.get(x) == null) return null;
 
-        if(fa.get(x) != x) {
+
             String currFather = fa.get(x);
+        if(fa.get(x) != null) {
             String root = find(currFather, fa, val);
             fa.put(x, root);
             double currValue = val.get(x);
             val.put(x, currValue * val.get(currFather));
         }
         return fa.get(x);
+    }
+
+    public static void main(String[] args) {
+        EvaluateDivision ed = new EvaluateDivision();
+        String[][] eqs = new String[][] {
+            {"a", "b"},
+            {"c", "d"},
+            {"a", "c"}
+        };
+        double[] values = new double[] {1.5, 2.0, 3.0};
+        String[][] queries = new String[][] {
+            {"a", "d"}
+        };
+        double[] results = ed.calcEquation(eqs, values, queries);
+
+        for(double r: results) System.out.println(r);
     }
 }

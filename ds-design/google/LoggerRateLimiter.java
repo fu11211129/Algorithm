@@ -1,5 +1,8 @@
+// leetcode 359
+
 public class LoggerRateLimiter {
     private int[] buckets = null;
+    // map hashing index to a set of messages which has the same timestamp
     private Set[] sets = null;
 
     /** Initialize your data structure here. */
@@ -15,9 +18,10 @@ public class LoggerRateLimiter {
         If this method returns false, the message will not be printed.
         The timestamp is in seconds granularity. */
     public boolean shouldPrintMessage(int timestamp, String message) {
+        // if 2 timestamps share the same hashing indices,
+        // then the difference between 2 timestamps must >= 10
+
         int index = timestamp % 10;
-        // if this index has been visited before, update the associated timestamp
-        //
         if(timestamp != buckets[index]) {
             buckets[index] = timestamp;
             sets[index].clear();
@@ -33,5 +37,5 @@ public class LoggerRateLimiter {
         }
         sets[index].add(message);
         return true;
-    }    
+    }
 }
