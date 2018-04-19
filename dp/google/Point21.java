@@ -33,7 +33,7 @@ public class Point21 {
             // f[i] = f[i-1] + f[i-10] + f[i-2] + f[i-9] + ... + f[i-6] + f[i-5]
             double s = 0.0;
             for(int j=i-10; j<=i-1; ++j) {
-                s + f[j];
+                s += f[j];
             }
             f[i] = s / 10.0;
         }

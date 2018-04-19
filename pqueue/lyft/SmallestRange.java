@@ -51,9 +51,11 @@ public class SmallestRange {
         // maintain such a pq that has at-least one element per row
         while(pq.size() == n) {
             Element e = pq.poll();
-            if(curMax - e.val < range) {
-                range = curMax - e.val;
-                start = e.val;
+            int currMin = e.val;
+
+            if(curMax - currMin < range) {
+                range = curMax - currMin;
+                start = currMin;
                 end = curMax;
             }
 
