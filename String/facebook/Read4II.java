@@ -1,19 +1,25 @@
 public class Read4II {
-    private int buffPtr = 0;
-    private int buffCnt = 0;
-    private char[] buff = new char[4];
+
+    public char[] wareHouse = new char[4];
+    public int counts = 0;
+    public int pt = 0;
+
     public int read(char[] buf, int n) {
-        int ptr = 0;
-        while (ptr < n) {
-            if (buffPtr == 0) {
-                buffCnt = read4(buff);
+        int index = 0;
+        while(index < n) {
+            // if warehouse is empty, fill new chars into warehouse with read4
+            if(counts == 0) counts = read4(wareHouse);
+
+            // if no more chars can be read from read4, stop reading.
+            if(counts == 0) break;
+
+            while(pt < counts && index < n)  buf[index++] = wareHouse[pt++];
+
+            if(pt >= counts) {
+                pt = 0;
+                counts = 0;
             }
-            if (buffCnt == 0) break;
-            while (ptr < n && buffPtr < buffCnt) {
-                buf[ptr++] = buff[buffPtr++];
-            }
-            if (buffPtr == buffCnt) buffPtr = 0;
         }
-        return ptr;
+        return index;
     }
 }
