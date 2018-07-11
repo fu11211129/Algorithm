@@ -37,7 +37,7 @@ public class MaximumAverageSubarray {
                 presum += nums[i - k] * 1.0 - mid;
                 minPresum = Math.min(minPresum, presum);
 
-                if(window(sum, nums, 0, i, mid) >= 0.0 || window(sum, nums, 0, i, mid) - presum >= 0.0) {
+                if(window(sum, nums, 0, i, mid) >= 0.0 || window(sum, nums, 0, i, mid) - minPresum >= 0.0) {
                     exist = true;
                     break;
                 }
@@ -52,5 +52,5 @@ public class MaximumAverageSubarray {
 
     public double window(int[] sum, int[] nums, int i, int j, double of) {
         return (sum[j] - sum[i] + nums[i]) * 1.0 - (j - i + 1) * of * 1.0;
-    }   
+    }
 }
