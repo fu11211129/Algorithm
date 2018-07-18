@@ -1,120 +1,59 @@
 // http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=345555&highlight=%BB%FA%C6%F7%C8%CB
 public class RobotCleaner {
+    // moving UP is add (moveX[0], moveY[0]) to current position
+    // moving LEFT is add (moveX[1], moveY[1]) to current positoin
+    //              DOEN          (moveX[2], moveY[2])
+    //              RIGHT         (moveX[3], moveY[3])
 
-    private final Random rand = new Random();
-    private final int[][] dirs = new int[][] {{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
-    private int[] pos;
-    private int currDir;
-    private Set<String> used;
-    private Stack<int[]> stack;
-    private Stack<Integer> actions;
-    private Map<String, Set<Integer> > used = new HashMap<> ();
-    // void turnLeft(k)
-    // void turnRight(k)
-    // void clean()
-    // boolean move(), move forward if possible, and return true; return false if not possible.
+    public void cleanRoom(Robot robot) {
+            Map<Integer, Set<Integer>> map = new HashMap<>();
+            cleanNext(robot, map, 0, 0, 0);
+        }
 
-    // assume the robot what is left, right, up & down.
-    public RobotCleaner() {
-        currDir = rand.nextInt(dirs.length);
-        pos = new int[] {0, 0};
-        used = new HashSet<> ();
-        stack = new Stack<> ();
-        stack.push(new int[] {0, 0, 0});
-        actions = new Stack<> ();
-    }
+    private int[] getNextPos(int direction, int x, int y) {
+            int[] moveX = {-1, 0, 1, 0};
+            int[] moveY = {0, -1, 0, 1};
+            return new int[] {x + moveX[direction], y + moveY[direction]};
+        }
 
-    public boolean nextMove() {
-        if(move()) {
-            String posStr = (pos[0] + dirs[currDir][0]) + "," + (pos[1] + dirs[currDir][1]);
-            if(used.get(posStr) == null || !used.get(posStr).contains(currDir)) {
-                pos[0] += dirs[currDir][0];
-                pos[1] += dirs[currDir][1];
-                return true;
+    		// after visit a position, keep a journal in Map
+        private void markPos(Map<Integer, Set<Integer>> map, int x, int y) {
+            if (map.containsKey(x)) {
+                Set<Integer> ys = map.get(x);
+                ys.add(y);
             } else {
-                makeTurns();
-            }
-
-            return true;
-        } else {
-            trunLeft(1);
-            currDir = (currDir + 1) % 4;
-            if(move()) {
-                // turn 90 degree based on current direction.
-                pos[0] += dirs[currDir][0];
-                pos[1] += dirs[currDir][1];
-                return true;
-            } else {
-                trunLeft(1); // turn 180 degree
-                currDir = (currDir + 1) % 4;
-                if(move()) {
-                    pos[0] += dirs[currDir][0];
-                    pos[1] += dirs[currDir][1];
-                    return true;
-                } else {
-                    turnLeft(1); // turn 270 degree
-                    currDir = (currDir + 1) % 4;
-                    if(move()) {
-                        pos[0] += dirs[currDir][0];
-                        pos[1] += dirs[currDir][1];
-                        return true;
-                    }
-                }
+                Set<Integer> ys = new HashSet<>();
+                ys.add(y);
+                map.put(x, ys);
             }
         }
-        return false;
-    }
-
-    public void cleanRoom() {
-        int sx = 0, sy = 0;
-        String pos = sx + "," + sy;
-        cellDir.put(pos, new HashSet<> ());
-
-        boolean stuck = false;
-
-        while(!stuck) {
-            clean(); // clean the current area
-
-            int nx = pos[0] + dirs[currDir][0];
-            int ny = pos[1] + dirs[currDir][1];
-            String nxy = nx + "," + ny;
-
-            if(used.get(nxy) == null || !used.get(nxy).contains(currDir)) { // this cell has not been visited.
-                boolean canMove = move();
-                if(canMove) {
-                    pos[0] += dirs[currDir][0];
-                    pos[1] += dirs[currDir][0];
-                    String posStr = pos[0] + "," + pos[1];
-                    if(used.get(posStr) == null) used.put(posStr, new HashSet<> ());
-                    used.get(posStr).add(currDir);
-                    stuck = false;
-
-                } else { // cannot move forward
-                    stuck = true;
-                    
-                    for(int k=1; k<=3; ++k) {
-                        int ndir = (currDir + k) % 4;
-                        nx = pos[0] + dirs[ndir][0];
-                        ny = pos[1] + dirs[ndir][1];
-                        nxy = nx + "," + ny;
-
-                        if(used.get(nxy) == null || !used.get(nxy).contains(ndir)) {
-                            boolean canMove = move();
-                            if(canMove) {
-                                currDir = ndir; // change direction.
-                                pos[0] += dirs[currDir][0];
-                                pos[1] += dirs[currDir][0];
-                                String posStr = pos[0] + "," + pos[1];
-                                if(used.get(posStr) == null) used.put(posStr, new HashSet<> ());
-                                used.get(posStr).add(currDir);
-                                stuck = false;
-                                break;
-                            }
-                        }
+    		// direction has four value, 0, 1, 2, 3, which means UP, LEFT, DOWN, RIGHT
+        private void cleanNext(Robot robot, Map<Integer, Set<Integer>> map, int x, int y, int direction) {
+            robot.clean();
+            markPos(map, x, y);
+            for (int i = 0; i < 4; i ++) {
+                int newDir = (direction + i) % 4;
+                int[] directions = getNextPos(newDir, x, y);
+                int nextX = directions[0];
+                int nextY = directions[1];
+                if ((!map.containsKey(nextX) || (map.containsKey(nextX) && !map.get(nextX).contains(nextY)))) {
+                    if (robot.move()) {
+                        cleanNext(robot, map, nextX, nextY, newDir);
+                        toPrevious(robot);
+                    } else {
+                        markPos(map, nextX, nextY);
                     }
                 }
-
+                robot.turnLeft();
             }
         }
-    }
+
+    		// return to previous position
+        private void toPrevious(Robot robot) {
+            robot.turnLeft();
+            robot.turnLeft();
+            robot.move();
+            robot.turnLeft();
+            robot.turnLeft();
+        }
 }

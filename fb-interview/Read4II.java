@@ -15,5 +15,29 @@ public class Read4II {
             }
         }
         return idx;
-    }    
+    }
+
+    // @Follow Up
+    // Given a function read4k() (return a string 4000 length)
+    // make a function printLine() that can print line (break by '\n')
+    public int printLine(int n) {
+        int idx = 0;
+        while(idx < n) {
+            if(cnt == 0) cnt = read4k(warehouse); // wareHouse = new char[4000]
+            if(cnt == 0) break; // no more chars in stream.
+
+            for(; ptr < cnt && idx < n && wareHouse[ptr] != '/n') {
+                print(wareHouse[ptr++]);
+            }
+
+            if(ptr == cnt) {
+                ptr = 0;
+                cnt = 0;
+            }
+
+            if(wareHouse[ptr] == '/n') {
+                print('\n');
+            }
+        }
+    }
 }
