@@ -31,11 +31,11 @@ public class FindKthElementFromNSortedArrays {
         for(int i = 1; i < A.length; i += 1) maxv = Math.max(maxv, A[i].get(A[i].size() - 1));
 
         int L = minv, R = maxv;
-        for(; L < R; ) {
+        for(; L < R; ) { // log(T)
             int mid = (L + R) / 2;
             int cnt = 0; // count # <= "mid" guess
 
-            for(int i = 0; i < A.length; i += 1) {
+            for(int i = 0; i < A.length; i += 1) { // O(n)
                 // count (#) <= mid for each list
                 cnt += bsearch(A[i], mid);
             }
