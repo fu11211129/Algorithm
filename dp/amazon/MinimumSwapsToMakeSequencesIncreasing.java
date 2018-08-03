@@ -24,6 +24,6 @@ public class MinimumSwapsToMakeSequencesIncreasing {
             }
         }
 
-        return Math.min(noSwap[n - 1], swap[n - 1]);
-    }    
+        return Math.min(noSwa p[n - 1], swap[n - 1]);
+    }
 }
